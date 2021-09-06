@@ -3,17 +3,15 @@
 #include "include.h"
 #include "nucleotide.h"
 
-typedef struct p_codon private_codon;
-typedef private_codon *PrivateCodon;
+typedef struct private_codon _private_codon;
+typedef _private_codon *PrivateCodon;
 
+typedef struct public_codon *Codon;
 typedef struct public_codon {
   PrivateCodon private;
-  void (* setId) (void *, unsigned int id);
-  void (* setNucleotide) (void *self, Nucleotide ntd, unsigned int position);
-} PublicCodon;
-
-typedef PublicCodon *Codon;
-
+  void (* setId) (Codon self, unsigned int id);
+  void (* setNucleotide) (Codon self, Nucleotide ntd, unsigned int position);
+} _public_codon;
 
 Codon codon();
 

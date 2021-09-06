@@ -1,17 +1,17 @@
 #include "ribosome.h"
 
-typedef struct p_ribosome{
+typedef struct private_ribosome{
   Base b;
   unsigned int id;
-} private_ribosome;
+} _private_ribosome;
 
-void ribosome_setId(void *self, unsigned int id){
-  ((Ribosome)self)->private->id = id;
+void ribosome_setId(Ribosome self, unsigned int id){
+  self->private->id = id;
 }
 
 void ribosome_destructor(void *self){
   printf("Destructor Ribosome [%d]!\n", ((Ribosome)self)->private->id);
-  private_ribosome * pr = ((Ribosome) self)->private;
+  _private_ribosome * pr = ((Ribosome) self)->private;
 
   free(pr);
   ((Ribosome) self)->private = NULL;
@@ -19,10 +19,10 @@ void ribosome_destructor(void *self){
 
 Ribosome ribosome(){
 
-  PrivateRibosome pr = (PrivateRibosome) malloc(sizeof(private_ribosome));
+  PrivateRibosome pr = (PrivateRibosome) malloc(sizeof(_private_ribosome));
   pr->id = 0;
 
-  Ribosome p = (Ribosome) malloc(sizeof(PublicRibosome));
+  Ribosome p = (Ribosome) malloc(sizeof(_public_ribosome));
   p->private = pr;
 
   p->setId = &ribosome_setId;

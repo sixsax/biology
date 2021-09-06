@@ -2,15 +2,14 @@
 #define RIBOSOME_H
 #include "include.h"
 
-typedef struct p_ribosome private_ribosome;
-typedef private_ribosome *PrivateRibosome;
+typedef struct private_ribosome _private_ribosome;
+typedef _private_ribosome *PrivateRibosome;
 
-typedef struct public_ribosome {  
+typedef struct public_ribosome *Ribosome;
+typedef struct public_ribosome {
   PrivateRibosome private;
-  void (* setId) (void *, unsigned int id);
-} PublicRibosome;
-
-typedef PublicRibosome *Ribosome;
+  void (* setId) (Ribosome self, unsigned int id);
+} _public_ribosome;
 
 Ribosome ribosome();
 #endif

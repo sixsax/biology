@@ -8,14 +8,14 @@
 #define THYMINE   0x08
 #define URACIL    0x10
 
-typedef struct p_nucleobase private_nucleobase;
-typedef private_nucleobase *PrivateNucleobase;
+typedef struct private_nucleobase _private_nucleobase;
+typedef _private_nucleobase *PrivateNucleobase;
 
+typedef struct public_nucleobase *Nucleobase;
 typedef struct public_nucleobase {
   PrivateNucleobase private;
-  void (* setType) (void *, uint8_t type);
-} PublicNucleobase;
-typedef PublicNucleobase *Nucleobase;
+  void (* setType) (Nucleobase self, uint8_t type);
+} _public_nucleobase;
 
 Nucleobase nucleobase();
 
