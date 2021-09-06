@@ -7,19 +7,18 @@ typedef struct _item {
 } item;
 typedef item *Item;
 
-typedef struct p_list private_list;
-typedef private_list *PrivateList;
+typedef struct private_list _private_list;
+typedef _private_list *PrivateList;
 
+typedef struct public_list *List;
 typedef struct public_list {
   PrivateList private;
-  void  (* add) (void *self, Item item);
-  void  (* empty) (void *self);
+  void  (* add) (List self, Item item);
+  void  (* empty) (List self);
 
-  Item  (* getIndex) (void *self, int index);  
-  int   (* getLen) (void *self);
-} PublicList;
-
-typedef PublicList *List;
+  Item  (* getIndex) (List self, int index);
+  int   (* getLen) (List self);
+} _public_list;
 
 List list();
 

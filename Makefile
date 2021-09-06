@@ -28,4 +28,4 @@ lib/lib.o: lib/list.c lib/list.h
 #end lib
 
 clean:
-	$(RM) . -name "*.gch" -delete -o -name "*.o" -delete
+	$(RM) . -name "*.gch" -delete -o -name "*.o" -delete -o -name "biology" -delete

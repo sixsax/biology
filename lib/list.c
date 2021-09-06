@@ -1,13 +1,13 @@
 #include "list.h"
 
-typedef struct p_list{
+typedef struct private_list{
   Base b;
   unsigned int len;
   Item *items;
-} private_list;
+} _private_list;
 
-Item getIndex(void *self, int index){
-  PrivateList l = ((List)self)->private;
+Item getIndex(List self, int index){
+  PrivateList l = self->private;
 
   //If index is out of bounds
   if ( (index < 1) || (index > l->len) )
@@ -16,14 +16,14 @@ Item getIndex(void *self, int index){
   return l->items[index-1];
 }
 
-int getLen(void* self){
-  PrivateList l = ((List)self)->private;
+int getLen(List self){
+  PrivateList l = self->private;
 
   return l->len;
 }
 
-void list_add (void *self, Item item){
-  PrivateList l = ((List)self)->private;
+void list_add (List self, Item item){
+  PrivateList l = self->private;
 
   l->len++;
   l->items = (Item *) realloc (l->items, l->len);
@@ -31,8 +31,8 @@ void list_add (void *self, Item item){
   l->items[l->len - 1] = item;
 }
 
-void list_empty(void *self){
-  PrivateList l = ((List)self)->private;
+void list_empty(List self){
+  PrivateList l = self->private;
 
   for (int i = l->len - 1; i >= 0; i--){
     void *data = (l->items[i])->data;
@@ -47,18 +47,18 @@ void list_empty(void *self){
 
 void list_destructor(void *self){
   printf("Destructor List [%p]!\n", (List) self );
-  private_list * pl = ((List)self)->private;
+  _private_list * pl = ((List)self)->private;
 
   free(pl);
   ((List)self)->private = NULL;
 }
 
 List list(){
-  PrivateList pl = (PrivateList) malloc(sizeof(private_list));
+  PrivateList pl = (PrivateList) malloc(sizeof(_private_list));
   pl->items = NULL;
   pl->len = 0;
 
-  List l = (List) malloc (sizeof(PublicList));
+  List l = (List) malloc (sizeof(_public_list));
   l->private = pl;
   l->private->b.destructor = &list_destructor;
   l->add      = &list_add;

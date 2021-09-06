@@ -58,8 +58,9 @@ int main (int argc, char *argv[]){
   Item testItem = l1->getIndex(l1, 2);
   printf("testItem data %d\n", *(int *)testItem->data);
 
-  l1->empty(l1);
   printf("l1 len %d\n",l1->getLen(l1));
+  l1->empty(l1);
+  printf("l1 len after empty %d\n",l1->getLen(l1));
 
   delete(l1);
 
