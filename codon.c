@@ -1,17 +1,17 @@
 #include "codon.h"
 
-typedef struct p_codon{
+typedef struct private_codon{
   Base b;
   unsigned int id;
   Nucleotide ntd[3];
-}private_codon;
+}_private_codon;
 
-void codon_setId(void *self, unsigned int id){
-  ((Codon)self)->private->id = id;
+void codon_setId(Codon self, unsigned int id){
+  self->private->id = id;
 }
 
-void codon_setNucleotide(void *self, Nucleotide ntd, unsigned int position){
-  Codon c = (Codon) self;
+void codon_setNucleotide(Codon self, Nucleotide ntd, unsigned int position){
+  Codon c = self;
   if( position<0 || position > 2 ){
     fprintf(stderr, "Invalid codon position %d\n", position);
     return;
@@ -21,8 +21,8 @@ void codon_setNucleotide(void *self, Nucleotide ntd, unsigned int position){
 }
 
 void codon_destructor(void *self){
-  printf("Destructor Codon [%d]!\n", ((Codon)self)->private->id);
-  private_codon * pr = ((Codon) self)->private;
+  printf("Destructor Codon [%d]!\n", ((Codon) self)->private->id);
+  _private_codon * pr = ((Codon) self)->private;
 
   for( int i = 0;  i < 3; i++){
     if (pr->ntd[i] != NULL){
@@ -36,10 +36,10 @@ void codon_destructor(void *self){
 }
 
 Codon codon(){
-  PrivateCodon pr = (PrivateCodon) malloc(sizeof(private_codon));
+  PrivateCodon pr = (PrivateCodon) malloc(sizeof(_private_codon));
   pr->id = 0;
 
-  Codon c = (Codon) malloc(sizeof(PublicCodon));
+  Codon c = (Codon) malloc(sizeof(_public_codon));
   c->private = pr;
 
   c->setId = &codon_setId;

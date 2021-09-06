@@ -1,13 +1,13 @@
 #include "nucleobase.h"
 
-typedef struct p_nucleobase{
+typedef struct private_nucleobase{
   Base b;
   uint8_t type;
-} private_nucleobase;
+} _private_nucleobase;
 
-void nucleobase_setType(void *self, uint8_t type){
-  ((PrivateNucleobase)self)->type = type;
-  unsigned int ptype = ((PrivateNucleobase)self)->type;
+void nucleobase_setType(Nucleobase self, uint8_t type){
+  self->private->type = type;
+  unsigned int ptype = self->private->type;
 
   if(ptype & ADENINE)
     printf("ADENINE\n");
@@ -24,8 +24,8 @@ void nucleobase_setType(void *self, uint8_t type){
 }
 
 void nucleobase_destructor(void *self){
-  printf("Destructor Nucleobase [%hu]!\n", ((PrivateNucleobase)self)->type);
-  private_nucleobase * pr = ((Nucleobase) self)->private;
+  printf("Destructor Nucleobase [%hu]!\n", ((Nucleobase)self)->private->type);
+  _private_nucleobase * pr = ((Nucleobase) self)->private;
 
   free(pr);
   ((Nucleobase) self)->private = NULL;
@@ -33,10 +33,10 @@ void nucleobase_destructor(void *self){
 
 Nucleobase nucleobase(){
 
-  PrivateNucleobase pr = (PrivateNucleobase) malloc(sizeof(private_nucleobase));
+  PrivateNucleobase pr = (PrivateNucleobase) malloc(sizeof(_private_nucleobase));
   pr->type = 0;
 
-  Nucleobase p = (Nucleobase) malloc(sizeof(PublicNucleobase));
+  Nucleobase p = (Nucleobase) malloc(sizeof(_public_nucleobase));
   p->private = pr;
 
   p->setType = &nucleobase_setType;

@@ -1,24 +1,24 @@
 #include "nucleotide.h"
 
-typedef struct p_nucleotide{
+typedef struct private_nucleotide{
   Base b;
   unsigned int id;
   Nucleobase nb;
   /* Phosphate, Sugar and so on ... */
-} private_nucleotide;
+} _private_nucleotide;
 
-void nucleotide_setId(void *self, unsigned int id){
-  ((Nucleotide) self)->private->id = id;
+void nucleotide_setId(Nucleotide self, unsigned int id){
+  self->private->id = id;
 }
 
-void nucleotide_setNucleobase(void *self, Nucleobase nb){
-  ((Nucleotide) self)->private->nb = nb;
+void nucleotide_setNucleobase(Nucleotide self, Nucleobase nb){
+  self->private->nb = nb;
 }
 
 void nucleotide_destructor(void *self){
   printf("Destructor Nucleotide [%d]!\n", ((Nucleotide)self)->private->id);
 
-  private_nucleotide * pr = ((Nucleotide) self)->private;
+  _private_nucleotide * pr = ((Nucleotide) self)->private;
   Nucleobase nb = ((Nucleotide) self)->private->nb;
 
   delete(nb);
@@ -30,11 +30,11 @@ void nucleotide_destructor(void *self){
 
 Nucleotide nucleotide(){
 
-  PrivateNucleotide pn = (PrivateNucleotide) malloc(sizeof(private_nucleotide));
+  PrivateNucleotide pn = (PrivateNucleotide) malloc(sizeof(_private_nucleotide));
   pn->id = 0;
   pn->nb = NULL;
 
-  Nucleotide p = (Nucleotide) malloc(sizeof(PublicNucleotide));
+  Nucleotide p = (Nucleotide) malloc(sizeof(_public_nucleotide));
   p->private = pn;
 
   p->setId = &nucleotide_setId;
