@@ -6,7 +6,7 @@ typedef struct private_list{
   Item *items;
 } _private_list;
 
-Item getIndex(List self, int index){
+Item list_getIndex(List self, int index){
   PrivateList l = self->private;
 
   //If index is out of bounds
@@ -16,7 +16,7 @@ Item getIndex(List self, int index){
   return l->items[index-1];
 }
 
-int getLen(List self){
+int list_getLen(List self){
   PrivateList l = self->private;
 
   return l->len;
@@ -63,7 +63,7 @@ List list(){
   l->private->b.destructor = &list_destructor;
   l->add      = &list_add;
   l->empty    = &list_empty;
-  l->getIndex = &getIndex;
-  l->getLen   = &getLen;
+  l->getIndex = &list_getIndex;
+  l->getLen   = &list_getLen;
   return l;
 }
